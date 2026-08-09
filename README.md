@@ -10,11 +10,11 @@ La intención es que cada implementación calcule los ciclos de una persona a pa
 
 ## Estado del proyecto
 
-El proyecto está en desarrollo. Los directorios de cada tecnología están creados para organizar implementaciones futuras; actualmente, la versión React ya ofrece una calculadora web funcional.
+El proyecto está en desarrollo. Los directorios de cada tecnología organizan implementaciones equivalentes; actualmente, las versiones Angular y React ofrecen calculadoras web funcionales.
 
 | Directorio | Tecnología | Estado |
 | --- | --- | --- |
-| [`angular/`](angular/) | Angular | Pendiente |
+| [`angular/`](angular/) | Angular | Implementación funcional |
 | [`electron/`](electron/) | Electron | Pendiente |
 | [`golang/`](golang/) | Go | Pendiente |
 | [`groovy/`](groovy/) | Groovy | Pendiente |
@@ -26,9 +26,10 @@ El proyecto está en desarrollo. Los directorios de cada tecnología están crea
 | [`rust/`](rust/) | Rust | Pendiente |
 | [`scala/`](scala/) | Scala | Pendiente |
 
-## Implementación React
+## Implementaciones web
 
-Consulta [`react/README.md`](react/README.md) para conocer las herramientas configuradas, los requisitos y los comandos disponibles.
+- Consulta [`angular/README.md`](angular/README.md) para ejecutar la versión Angular.
+- Consulta [`react/README.md`](react/README.md) para ejecutar la versión React.
 
 ## Cómo contribuir
 
