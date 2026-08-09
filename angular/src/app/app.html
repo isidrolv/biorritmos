@@ -1,0 +1,27 @@
+<section id="biorritmo">
+  <app-biorhythm-header />
+
+  <app-biorhythm-input-form
+    [today]="today"
+    [birthDate]="birthDate()"
+    [selectedDate]="selectedDate()"
+    [isToday]="isToday()"
+    (birthDateChange)="birthDate.set($event)"
+    (selectedDateChange)="selectedDate.set($event)"
+    (previousDay)="shiftSelectedDate(-1)"
+    (goToToday)="selectedDate.set(today)"
+    (nextDay)="shiftSelectedDate(1)"
+  />
+
+  @if (series(); as currentSeries) {
+    <app-biorhythm-histogram
+      [series]="currentSeries"
+      [isToday]="isToday()"
+      [selectedDate]="selectedDateValue()"
+      [visible]="visible()"
+      (aspectToggle)="toggleAspect($event)"
+    />
+  } @else {
+    <p class="empty-state">Ingresa tu fecha de nacimiento para ver tu gráfico de biorritmo.</p>
+  }
+</section>
