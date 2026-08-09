@@ -1,9 +1,16 @@
 # Biorritmos con React
 
-Base del frontend de la calculadora de biorritmos, preparada con React, TypeScript y Vite.
+Calculadora web de biorritmos desarrollada con React, TypeScript y Vite.
 
-> [!IMPORTANT]
-> La configuración del proyecto está creada, pero el repositorio todavía no incluye el directorio `src/`. Por ello, los comandos de desarrollo y compilación no producirán una aplicación funcional hasta que se añada, como mínimo, el punto de entrada `src/main.tsx` referenciado por `index.html`.
+## Funcionalidad
+
+- Selección de fecha de nacimiento y fecha de consulta.
+- Navegación entre el día anterior, el día actual y el día siguiente.
+- Gráfica para un intervalo de 15 días antes y después de la fecha seleccionada.
+- Ciclos básicos: físico, emocional e intelectual.
+- Ciclos complementarios: espiritual, conciencia, intuición y estética.
+- Activación y desactivación individual de cada ciclo.
+- Valor porcentual y fase ascendente, descendente o crítica de cada aspecto.
 
 ## Tecnologías
 
@@ -11,71 +18,69 @@ Base del frontend de la calculadora de biorritmos, preparada con React, TypeScri
 - TypeScript 6
 - Vite 8 con `@vitejs/plugin-react`
 - ESLint 10
-- npm y archivo de bloqueo `package-lock.json`
 
 ## Requisitos
 
 - Node.js `^20.19.0` o `>=22.12.0`, según el requisito de Vite 8
 - npm, incluido con Node.js
 
-## Instalación
+## Instalación y ejecución
 
 Desde la raíz del repositorio:
 
 ```bash
 cd react
 npm install
-```
-
-Para una instalación estrictamente reproducible, especialmente en integración continua, puede usarse `npm ci` en lugar de `npm install`.
-
-## Comandos disponibles
-
-Todos los comandos se ejecutan dentro de `react/`:
-
-| Comando | Descripción |
-| --- | --- |
-| `npm run dev` | Inicia el servidor de desarrollo de Vite. |
-| `npm run build` | Comprueba TypeScript y genera la versión de producción en `dist/`. |
-| `npm run lint` | Analiza los archivos con ESLint. |
-| `npm run preview` | Sirve localmente el contenido generado en `dist/`. |
-
-Cuando exista el código fuente, el flujo habitual será:
-
-```bash
 npm run dev
 ```
 
-Vite mostrará en la terminal la URL local del servidor. Para comprobar una entrega de producción:
+Vite mostrará en la terminal la URL local del servidor.
 
-```bash
-npm run build
-npm run preview
-```
+## Comandos disponibles
 
-## Estructura actual
+| Comando | Descripción |
+| --- | --- |
+| `npm run dev` | Inicia el servidor de desarrollo. |
+| `npm run build` | Comprueba TypeScript y genera la aplicación en `dist/`. |
+| `npm run lint` | Analiza el código con ESLint. |
+| `npm run preview` | Sirve localmente la compilación de producción. |
+
+Para una instalación reproducible en integración continua puede utilizarse `npm ci`.
+
+## Estructura principal
 
 ```text
 react/
-├── index.html          # Documento HTML y montaje de /src/main.tsx
-├── package.json        # Dependencias y scripts npm
-├── package-lock.json   # Versiones resueltas de las dependencias
-├── tsconfig.json       # Configuración raíz de TypeScript
-├── tsconfig.app.json   # Configuración TypeScript del navegador
-├── tsconfig.node.json  # Configuración TypeScript de Vite
-└── vite.config.ts      # Configuración de Vite y React
+├── public/             # Recursos estáticos
+├── src/
+│   ├── components/     # Formulario, gráfica, resultados y controles
+│   ├── App.tsx         # Estado y composición de la aplicación
+│   ├── setup-datasets.ts # Definición de los ciclos
+│   ├── utils.ts        # Fechas y cálculo de biorritmos
+│   └── main.tsx        # Punto de entrada
+├── eslint.config.js
+├── package.json
+└── vite.config.ts
 ```
 
-La estructura prevista para comenzar la aplicación es:
+## Cálculo
+
+Cada ciclo se representa mediante una onda sinusoidal:
 
 ```text
-src/
-└── main.tsx            # Punto de entrada requerido por index.html
+valor = sen(2π × días desde el nacimiento / periodo) × 100
 ```
 
-## Estado pendiente
+Los resultados son una referencia recreativa y no constituyen información médica ni científica.
 
-Antes de considerar utilizable este frontend hace falta incorporar el código de `src/`, implementar el cálculo y la interfaz de biorritmos, y añadir pruebas. La documentación debe ampliarse conforme esas decisiones se materialicen.
+## Validación
+
+Antes de confirmar cambios ejecuta:
+
+```bash
+npm run lint
+npm run build
+```
 
 ## Licencia
 

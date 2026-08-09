@@ -1,0 +1,10 @@
+
+export function BiorhythmHeader() {
+    return <>
+        <h1>Calculadora de biorritmo</h1>
+        <p className="subtitle">
+            Ingresa tu fecha de nacimiento para graficar tus ciclos físico, emocional e intelectual, junto con los
+            aspectos complementarios: espiritual, conciencia, intuición y estética.
+        </p>
+    </>;
+}

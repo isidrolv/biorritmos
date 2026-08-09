@@ -10,7 +10,7 @@ La intención es que cada implementación calcule los ciclos de una persona a pa
 
 ## Estado del proyecto
 
-El proyecto está en una etapa inicial. Los directorios de cada tecnología están creados para organizar implementaciones futuras; actualmente, solo `react/` contiene un proyecto base, todavía sin el código de la aplicación (`src/`).
+El proyecto está en desarrollo. Los directorios de cada tecnología están creados para organizar implementaciones futuras; actualmente, la versión React ya ofrece una calculadora web funcional.
 
 | Directorio | Tecnología | Estado |
 | --- | --- | --- |
@@ -21,7 +21,7 @@ El proyecto está en una etapa inicial. Los directorios de cada tecnología est�
 | [`java/`](java/) | Java | Pendiente |
 | [`kotlin/`](kotlin/) | Kotlin | Pendiente |
 | [`python/`](python/) | Python | Pendiente |
-| [`react/`](react/) | React, TypeScript y Vite | Proyecto base; implementación pendiente |
+| [`react/`](react/) | React, TypeScript y Vite | Implementación funcional |
 | [`ruby/`](ruby/) | Ruby | Pendiente |
 | [`rust/`](rust/) | Rust | Pendiente |
 | [`scala/`](scala/) | Scala | Pendiente |
