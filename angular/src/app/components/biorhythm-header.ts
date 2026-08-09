@@ -3,12 +3,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 @Component({
   selector: 'app-biorhythm-header',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <h1>Calculadora de biorritmo</h1>
-    <p class="subtitle">
-      Ingresa tu fecha de nacimiento para graficar tus ciclos físico, emocional e intelectual, junto
-      con los aspectos complementarios: espiritual, conciencia, intuición y estética.
-    </p>
-  `,
+  templateUrl: './biorhythm-header.html',
 })
 export class BiorhythmHeader {}
