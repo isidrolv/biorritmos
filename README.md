@@ -10,12 +10,12 @@ La intención es que cada implementación calcule los ciclos de una persona a pa
 
 ## Estado del proyecto
 
-El proyecto está en desarrollo. Los directorios de cada tecnología organizan implementaciones equivalentes; actualmente, las versiones Angular y React ofrecen calculadoras web funcionales.
+El proyecto está en desarrollo. Los directorios de cada tecnología organizan implementaciones equivalentes; actualmente, Angular y React ofrecen calculadoras web y Electron una aplicación de escritorio funcional.
 
 | Directorio | Tecnología | Estado |
 | --- | --- | --- |
 | [`angular/`](angular/) | Angular | Implementación funcional |
-| [`electron/`](electron/) | Electron | Pendiente |
+| [`electron/`](electron/) | Electron, React y Vite | Implementación de escritorio funcional |
 | [`golang/`](golang/) | Go | Pendiente |
 | [`groovy/`](groovy/) | Groovy | Pendiente |
 | [`java/`](java/) | Java | Pendiente |
@@ -29,6 +29,7 @@ El proyecto está en desarrollo. Los directorios de cada tecnología organizan i
 ## Implementaciones web
 
 - Consulta [`angular/README.md`](angular/README.md) para ejecutar la versión Angular.
+- Consulta [`electron/README.md`](electron/README.md) para ejecutar la versión de escritorio.
 - Consulta [`react/README.md`](react/README.md) para ejecutar la versión React.
 
 ## Cómo contribuir
