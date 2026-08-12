@@ -1,4 +1,13 @@
-<section id="biorritmo">
+<section id="biorritmo" [attr.data-theme]="theme()">
+  <div class="theme-picker">
+    <label for="theme-select">Tema</label>
+    <select id="theme-select" [value]="theme()" (change)="setTheme($event)">
+      @for (option of themes; track option.value) {
+        <option [value]="option.value">{{ option.label }}</option>
+      }
+    </select>
+  </div>
+
   <app-biorhythm-header />
 
   <app-biorhythm-input-form

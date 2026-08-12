@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 920" fill="none">
+  <defs>
+    <radialGradient id="pulse">
+      <stop offset="0.28" stop-color="#7C3AED" stop-opacity=".0510"/>
+      <stop offset="0.10" stop-color="#7C3AED" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <circle cx="410" cy="176" r="220" fill="url(#pulse)"/>
+
+  <g opacity=".09" stroke="#64748B">
+    <path d="M0 104H820M0 176H820M0 248H820"/>
+    <path d="M82 48V304M205 48V304M328 48V304M451 48V304M574 48V304M697 48V304"/>
+  </g>
+
+  <g stroke-linecap="round" stroke-width="2.5" opacity=".24">
+    <path d="M-36 176C20 82 76 82 132 176s112 94 168 0 112-94 168 0 112 94 168 0 112-94 168 0 112 94 168 0" stroke="#1656C9"/>
+    <path d="M-36 176c38-72 76-72 114 0s76 72 114 0 76-72 114 0 76 72 114 0 76-72 114 0 76 72 114 0 76-72 114 0 76 72 114 0" stroke="#D32F2F"/>
+    <path d="M-36 176c30-52 60-52 90 0s60 52 90 0 60-52 90 0 60 52 90 0 60-52 90 0 60 52 90 0 60-52 90 0 60 52 90 0 60-52 90 0 60 52 90 0" stroke="#1F9254"/>
+  </g>
+
+  <g transform="translate(0 650)" stroke-linecap="round" stroke-width="2" opacity=".12">
+    <path d="M-60 110C20 10 100 10 180 110s160 100 240 0 160-100 240 0 160 100 240 0" stroke="#7C3AED"/>
+    <path d="M-60 110c55-72 110-72 165 0s110 72 165 0 110-72 165 0 110 72 165 0 110-72 165 0 110 72 165 0 110-72 165 0" stroke="#0891B2" stroke-dasharray="7 7"/>
+    <path d="M-60 110c42-54 84-54 126 0s84 54 126 0 84-54 126 0 84 54 126 0 84-54 126 0 84 54 126 0 84-54 126 0 84 54 126 0 84-54 126 0" stroke="#D97706" stroke-dasharray="2 8"/>
+  </g>
+
+  <g fill="#FFFFFF" stroke-width="2" opacity=".55">
+    <circle cx="410" cy="176" r="6" stroke="#7C3AED"/>
+    <circle cx="410" cy="760" r="5" stroke="#0891B2"/>
+  </g>
+</svg>

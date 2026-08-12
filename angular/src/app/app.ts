@@ -23,6 +23,8 @@ import { BiorhythmHeader } from './components/biorhythm-header';
 import { BiorhythmHistogram } from './components/biorhythm-histogram';
 import { BiorhythmInputForm } from './components/biorhythm-input-form';
 
+type Theme = 'light' | 'night' | 'ocean' | 'aurora';
+
 @Component({
   selector: 'app-root',
   imports: [BiorhythmHeader, BiorhythmInputForm, BiorhythmHistogram],
@@ -32,6 +34,13 @@ import { BiorhythmInputForm } from './components/biorhythm-input-form';
   encapsulation: ViewEncapsulation.None,
 })
 export class App {
+  readonly themes: { value: Theme; label: string }[] = [
+    { value: 'light', label: 'Claro' },
+    { value: 'night', label: 'Nocturno' },
+    { value: 'ocean', label: 'Océano' },
+    { value: 'aurora', label: 'Aurora' },
+  ];
+  readonly theme = signal<Theme>('light');
   readonly today = toInputValue(new Date());
   readonly birthDate = signal('');
   readonly selectedDate = signal(this.today);
@@ -87,5 +96,9 @@ export class App {
 
   toggleAspect(key: AspectKey): void {
     this.visible.update((current) => ({ ...current, [key]: !current[key] }));
+  }
+
+  setTheme(event: Event): void {
+    this.theme.set((event.target as HTMLSelectElement).value as Theme);
   }
 }
