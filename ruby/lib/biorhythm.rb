@@ -51,9 +51,7 @@ module Biorhythm
 
     lines = Aspects::LIST.map do |aspect|
       values = days_since_birth.map { |days| value_at(days, aspect[:period]) }
-      path = values.each_with_index
-                    .map { |v, i| "#{i.zero? ? 'M' : 'L'} #{'%.2f' % x_scale.call(i)} #{'%.2f' % y_scale.call(v)}" }
-                    .join(' ')
+      points = values.each_with_index.map { |v, i| [x_scale.call(i), y_scale.call(v)] }
       current_value = values[RANGE_DAYS]
       next_value = value_at(days_since_birth[RANGE_DAYS] + 1, aspect[:period])
 
@@ -63,11 +61,11 @@ module Biorhythm
         color: aspect[:color],
         dash: aspect[:dash],
         group: aspect[:group],
-        path: path,
-        currentValue: current_value.round,
+        points: points,
+        current_value: current_value.round,
         status: phase_label(current_value, next_value),
-        markerX: x_scale.call(RANGE_DAYS).round(2),
-        markerY: y_scale.call(current_value).round(2),
+        marker_x: x_scale.call(RANGE_DAYS),
+        marker_y: y_scale.call(current_value),
       }
     end
 
@@ -81,13 +79,12 @@ module Biorhythm
     marker_label = is_today ? 'Hoy' : format_short(selected_date)
 
     {
-      chart: { width: CHART_WIDTH, height: CHART_HEIGHT, margin: MARGIN },
       gridlines: gridlines,
-      centerX: x_scale.call(RANGE_DAYS).round(2),
-      markerLabel: marker_label,
-      dateLabels: date_labels,
+      center_x: x_scale.call(RANGE_DAYS),
+      marker_label: marker_label,
+      date_labels: date_labels,
       lines: lines,
-      isToday: is_today,
+      is_today: is_today,
     }
   end
 end
