@@ -1,0 +1,20 @@
+[package]
+name = "biorritmo"
+version = "0.1.0"
+edition = "2021"
+description = "Calculadora de biorritmo -- aplicación de escritorio en Rust que replica la funcionalidad y apariencia del proyecto Ruby equivalente (../ruby)."
+
+[[bin]]
+name = "biorritmo"
+path = "src/main.rs"
+
+[dependencies]
+eframe = "0.36"
+egui = "0.36"
+time = { version = "0.3", features = ["macros", "local-offset"] }
+
+[target.'cfg(windows)'.dependencies]
+winreg = "0.56"
+
+[profile.release]
+opt-level = 2

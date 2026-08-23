@@ -9,10 +9,10 @@ import (
 )
 
 const (
-	buttonPadX    = 14.0
-	buttonPadY    = 6.0
-	buttonBorder  = 1.0
-	buttonTextSz  = 13.0
+	buttonPadX   = 14.0
+	buttonPadY   = 6.0
+	buttonBorder = 1.0
+	buttonTextSz = 13.0
 )
 
 // Button es un botón plano simple (rectángulo con borde), parecido al

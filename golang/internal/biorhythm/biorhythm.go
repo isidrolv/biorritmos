@@ -126,16 +126,16 @@ func Compute(birthDate, selectedDate time.Time) Series {
 		nextValue := ValueAt(daysSinceBirth[RangeDays]+1, aspect.Period)
 
 		lines = append(lines, Line{
-			Key:           aspect.Key,
-			Label:         aspect.Label,
-			Color:         aspect.Color,
-			Dash:          aspect.Dash,
-			Group:         aspect.Group,
-			Points:        points,
-			CurrentValue:  round(currentValue),
-			Status:        PhaseLabel(currentValue, nextValue),
-			MarkerX:       xScale(RangeDays),
-			MarkerY:       yScale(currentValue),
+			Key:          aspect.Key,
+			Label:        aspect.Label,
+			Color:        aspect.Color,
+			Dash:         aspect.Dash,
+			Group:        aspect.Group,
+			Points:       points,
+			CurrentValue: round(currentValue),
+			Status:       PhaseLabel(currentValue, nextValue),
+			MarkerX:      xScale(RangeDays),
+			MarkerY:      yScale(currentValue),
 		})
 	}
 

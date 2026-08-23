@@ -21,14 +21,14 @@ type DateField struct {
 }
 
 const (
-	dfBoxH   = 26.0
-	dfDayW   = 30.0
-	dfMonthW = 30.0
-	dfYearW  = 46.0
-	dfArrowW = 16.0
+	dfBoxH    = 26.0
+	dfDayW    = 30.0
+	dfMonthW  = 30.0
+	dfYearW   = 46.0
+	dfArrowW  = 16.0
 	dfUnitGap = 3.0
-	dfBorder = 1.0
-	dfTextSz = 13.0
+	dfBorder  = 1.0
+	dfTextSz  = 13.0
 )
 
 // Width es el ancho total que ocupa el control.

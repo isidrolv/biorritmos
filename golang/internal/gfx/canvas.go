@@ -269,7 +269,7 @@ func (c *Canvas) Text(txt string, x, y, size float64, col color.NRGBA, weight fo
 func (c *Canvas) Paragraph(txt string, x, y, width, size float64, col color.NRGBA, weight font.Weight) float64 {
 	gtx := c.Gtx
 	wpx := int(c.px(width))
-	gtx.Constraints = layout.Constraints{Min: image.Pt(wpx, 0), Max: image.Pt(wpx, 1 << 20)}
+	gtx.Constraints = layout.Constraints{Min: image.Pt(wpx, 0), Max: image.Pt(wpx, 1<<20)}
 	fnt := font.Font{Typeface: c.Fonts.Face, Weight: weight}
 	sp := c.spFor(c.px(size))
 	textMaterial := c.textColor(col)

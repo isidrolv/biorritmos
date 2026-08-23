@@ -130,25 +130,21 @@ func (a *App) Layout(gtx layout.Context) layout.Dimensions {
 	colors := theme.For(a.themeMode)
 	paint.FillShape(gtx.Ops, colors.Bg, clip.Rect(image.Rectangle{Max: gtx.Constraints.Max}).Op())
 
-	return layout.Flex{Axis: layout.Vertical}.Layout(gtx,
-		layout.Rigid(func(gtx layout.Context) layout.Dimensions {
-			return layout.Inset{Left: unitDp(windowMargin), Right: unitDp(windowMargin), Top: unitDp(windowMargin)}.
-				Layout(gtx, func(gtx layout.Context) layout.Dimensions {
-					return a.layoutTopbar(gtx, colors)
-				})
-		}),
-		layout.Rigid(layout.Spacer{Height: unitDp(rowGap)}.Layout),
-		layout.Rigid(func(gtx layout.Context) layout.Dimensions {
-			return layout.Inset{Left: unitDp(windowMargin), Right: unitDp(windowMargin)}.
-				Layout(gtx, func(gtx layout.Context) layout.Dimensions {
-					return a.layoutControls(gtx, colors)
-				})
-		}),
-		layout.Rigid(layout.Spacer{Height: unitDp(rowGap)}.Layout),
-		layout.Flexed(1, func(gtx layout.Context) layout.Dimensions {
-			return a.layoutCanvas(gtx, colors)
-		}),
-	)
+	return layout.UniformInset(unitDp(windowMargin)).Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+		return layout.Flex{Axis: layout.Vertical}.Layout(gtx,
+			layout.Rigid(func(gtx layout.Context) layout.Dimensions {
+				return a.layoutTopbar(gtx, colors)
+			}),
+			layout.Rigid(layout.Spacer{Height: unitDp(rowGap)}.Layout),
+			layout.Rigid(func(gtx layout.Context) layout.Dimensions {
+				return a.layoutControls(gtx, colors)
+			}),
+			layout.Rigid(layout.Spacer{Height: unitDp(rowGap)}.Layout),
+			layout.Flexed(1, func(gtx layout.Context) layout.Dimensions {
+				return a.layoutCanvas(gtx, colors)
+			}),
+		)
+	})
 }
 
 func (a *App) layoutTopbar(gtx layout.Context, colors theme.Colors) layout.Dimensions {
@@ -199,10 +195,10 @@ func (a *App) layoutControls(gtx layout.Context, colors theme.Colors) layout.Dim
 	width := float64(widthPx) / float64(c.Scale)
 
 	const (
-		labelSz    = 12.0
-		fieldGap   = 4.0
-		colGap     = 28.0
-		navBtnGap  = 6.0
+		labelSz   = 12.0
+		fieldGap  = 4.0
+		colGap    = 28.0
+		navBtnGap = 6.0
 	)
 
 	birthLabel := "Fecha de nacimiento"
