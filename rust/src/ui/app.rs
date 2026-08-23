@@ -42,7 +42,9 @@ fn legend_y() -> f64 {
 }
 
 pub fn today_date() -> Date {
-    OffsetDateTime::now_local().unwrap_or_else(|_| OffsetDateTime::now_utc()).date()
+    OffsetDateTime::now_local()
+        .unwrap_or_else(|_| OffsetDateTime::now_utc())
+        .date()
 }
 
 pub struct App {
@@ -65,7 +67,8 @@ impl App {
         if birth_day > 28 {
             birth_day = 28;
         }
-        let birth = Date::from_calendar_date(today.year() - 25, today.month(), birth_day).unwrap_or(today);
+        let birth =
+            Date::from_calendar_date(today.year() - 25, today.month(), birth_day).unwrap_or(today);
 
         let mut visible = HashMap::with_capacity(aspects::LIST.len());
         for a in aspects::LIST.iter() {
@@ -80,7 +83,11 @@ impl App {
             birth_date: birth,
             selected_date: today,
             series,
-            theme_buttons: [Button::new("Sistema"), Button::new("Claro"), Button::new("Oscuro")],
+            theme_buttons: [
+                Button::new("Sistema"),
+                Button::new("Claro"),
+                Button::new("Oscuro"),
+            ],
             prev_btn: Button::new("< Anterior"),
             today_btn: Button::new("Hoy"),
             next_btn: Button::new("Siguiente >"),
@@ -100,7 +107,11 @@ impl App {
         let (lw, lh, btn_sizes) = {
             let canvas = Canvas::new(ui);
             let (lw, lh) = canvas.measure_text(label, LABEL_SZ, Weight::Normal);
-            let sizes: Vec<(f64, f64)> = self.theme_buttons.iter().map(|b| b.measure(&canvas)).collect();
+            let sizes: Vec<(f64, f64)> = self
+                .theme_buttons
+                .iter()
+                .map(|b| b.measure(&canvas))
+                .collect();
             (lw, lh, sizes)
         };
 
@@ -115,21 +126,38 @@ impl App {
         let row_h = lh.max(btn_h);
         let start_x = (width - content_w).max(0.0);
 
-        let (rect, _resp) = ui.allocate_exact_size(Vec2::new(width as f32, row_h as f32), Sense::hover());
+        let (rect, _resp) =
+            ui.allocate_exact_size(Vec2::new(width as f32, row_h as f32), Sense::hover());
 
         let canvas = Canvas::new(ui);
         let ox = rect.min.x as f64;
         let oy = rect.min.y as f64;
 
         let mut cx = ox + start_x;
-        canvas.text(label, cx, oy + (row_h - lh) / 2.0, LABEL_SZ, colors.text_h, Weight::Normal, Align::Left);
+        canvas.text(
+            label,
+            cx,
+            oy + (row_h - lh) / 2.0,
+            LABEL_SZ,
+            colors.text_h,
+            Weight::Normal,
+            Align::Left,
+        );
         cx += lw + GAP;
 
         let mut clicked_idx: Option<usize> = None;
         for (i, btn) in self.theme_buttons.iter().enumerate() {
             let (w, h) = btn_sizes[i];
             let selected = self.theme_mode as usize == i;
-            if btn.show(&canvas, ("theme-btn", i), cx, oy + (row_h - h) / 2.0, colors, selected, true) {
+            if btn.show(
+                &canvas,
+                ("theme-btn", i),
+                cx,
+                oy + (row_h - h) / 2.0,
+                colors,
+                selected,
+                true,
+            ) {
                 clicked_idx = Some(i);
             }
             cx += w + GAP;
@@ -179,8 +207,10 @@ impl App {
         let field_h = DateField::height();
         let row_h = label_h + FIELD_GAP + field_h.max(nav_h);
 
-        let (rect, _resp) =
-            ui.allocate_exact_size(Vec2::new(width as f32, (row_h + 2.0 * V_PAD) as f32), Sense::hover());
+        let (rect, _resp) = ui.allocate_exact_size(
+            Vec2::new(width as f32, (row_h + 2.0 * V_PAD) as f32),
+            Sense::hover(),
+        );
         let ox = rect.min.x as f64;
         let oy = rect.min.y as f64;
 
@@ -191,21 +221,51 @@ impl App {
         let canvas = Canvas::new(ui);
 
         let mut cx = ox + start_x;
-        canvas.text(birth_label, cx, label_y, LABEL_SZ, colors.label, Weight::Normal, Align::Left);
-        let (new_birth, birth_changed) = DateField::show(&canvas, "birth", cx, field_y, self.birth_date, colors);
+        canvas.text(
+            birth_label,
+            cx,
+            label_y,
+            LABEL_SZ,
+            colors.label,
+            Weight::Normal,
+            Align::Left,
+        );
+        let (new_birth, birth_changed) =
+            DateField::show(&canvas, "birth", cx, field_y, self.birth_date, colors);
         cx += col1_w + COL_GAP;
 
-        canvas.text(sel_label, cx, label_y, LABEL_SZ, colors.label, Weight::Normal, Align::Left);
-        let (new_selected, sel_changed) = DateField::show(&canvas, "selected", cx, field_y, self.selected_date, colors);
+        canvas.text(
+            sel_label,
+            cx,
+            label_y,
+            LABEL_SZ,
+            colors.label,
+            Weight::Normal,
+            Align::Left,
+        );
+        let (new_selected, sel_changed) =
+            DateField::show(&canvas, "selected", cx, field_y, self.selected_date, colors);
         cx += col2_w + COL_GAP;
 
         let mut nx = cx;
-        let prev_clicked = self.prev_btn.show(&canvas, "prev-btn", nx, nav_y, colors, false, true);
+        let prev_clicked = self
+            .prev_btn
+            .show(&canvas, "prev-btn", nx, nav_y, colors, false, true);
         nx += prev_size.0 + NAV_BTN_GAP;
         let today_enabled = self.selected_date != today_date();
-        let today_clicked = self.today_btn.show(&canvas, "today-btn", nx, nav_y, colors, false, today_enabled);
+        let today_clicked = self.today_btn.show(
+            &canvas,
+            "today-btn",
+            nx,
+            nav_y,
+            colors,
+            false,
+            today_enabled,
+        );
         nx += today_size.0 + NAV_BTN_GAP;
-        let next_clicked = self.next_btn.show(&canvas, "next-btn", nx, nav_y, colors, false, true);
+        let next_clicked = self
+            .next_btn
+            .show(&canvas, "next-btn", nx, nav_y, colors, false, true);
 
         let mut changed = false;
         if birth_changed {
@@ -217,7 +277,7 @@ impl App {
             changed = true;
         }
         if prev_clicked {
-            self.selected_date = self.selected_date - time::Duration::days(1);
+            self.selected_date -= time::Duration::days(1);
             changed = true;
         }
         if today_clicked && today_enabled {
@@ -225,7 +285,7 @@ impl App {
             changed = true;
         }
         if next_clicked {
-            self.selected_date = self.selected_date + time::Duration::days(1);
+            self.selected_date += time::Duration::days(1);
             changed = true;
         }
 
@@ -238,7 +298,8 @@ impl App {
         let width = ui.available_width() as f64;
         let height = ui.available_height() as f64;
 
-        let (rect, _resp) = ui.allocate_exact_size(Vec2::new(width as f32, height as f32), Sense::hover());
+        let (rect, _resp) =
+            ui.allocate_exact_size(Vec2::new(width as f32, height as f32), Sense::hover());
 
         let ox_avail = rect.min.x as f64;
         let oy_avail = rect.min.y as f64;
@@ -263,12 +324,27 @@ impl App {
     }
 
     fn draw_header(&self, canvas: &Canvas, ox: f64, oy: f64, colors: &Colors) {
-        let title_h =
-            canvas.paragraph("Calculadora de biorritmo", ox, oy + 6.0, CHART_WIDTH, 22.0, colors.text_h, Weight::Medium);
+        let title_h = canvas.paragraph(
+            "Calculadora de biorritmo",
+            ox,
+            oy + 6.0,
+            CHART_WIDTH,
+            22.0,
+            colors.text_h,
+            Weight::Medium,
+        );
 
         let subtitle = "Ingresa tu fecha de nacimiento para graficar tus ciclos físico, emocional e intelectual, \
                          junto con los aspectos complementarios: espiritual, conciencia, intuición y estética.";
-        canvas.paragraph(subtitle, ox, oy + 6.0 + title_h + 6.0, CHART_WIDTH, 12.0, colors.muted, Weight::Normal);
+        canvas.paragraph(
+            subtitle,
+            ox,
+            oy + 6.0 + title_h + 6.0,
+            CHART_WIDTH,
+            12.0,
+            colors.muted,
+            Weight::Normal,
+        );
     }
 
     fn draw_chart(&self, canvas: &Canvas, ox: f64, oy: f64, colors: &Colors) {
@@ -279,18 +355,46 @@ impl App {
         let top = oy + biorhythm::MARGIN.top;
 
         for g in &s.gridlines {
-            let col = if g.zero { colors.gridline_zero } else { colors.gridline };
+            let col = if g.zero {
+                colors.gridline_zero
+            } else {
+                colors.gridline
+            };
             canvas.stroke_line(left, oy + g.y, right_edge, oy + g.y, col, 1.0, &[]);
-            canvas.text(&g.value.to_string(), left - 8.0, oy + g.y - 6.0, 11.0, colors.axis_label, Weight::Normal, Align::Right);
+            canvas.text(
+                &g.value.to_string(),
+                left - 8.0,
+                oy + g.y - 6.0,
+                11.0,
+                colors.axis_label,
+                Weight::Normal,
+                Align::Right,
+            );
         }
 
         let cx = ox + s.center_x;
         let dash_33 = Canvas::parse_dash("3 3");
         canvas.stroke_line(cx, top, cx, bottom, colors.marker_line, 1.0, &dash_33);
-        canvas.text(&s.marker_label, cx, top - 18.0, 12.0, colors.label, Weight::Bold, Align::Center);
+        canvas.text(
+            &s.marker_label,
+            cx,
+            top - 18.0,
+            12.0,
+            colors.label,
+            Weight::Bold,
+            Align::Center,
+        );
 
         for dl in &s.date_labels {
-            canvas.text(&dl.label, ox + dl.x, bottom + 6.0, 11.0, colors.axis_label, Weight::Normal, Align::Center);
+            canvas.text(
+                &dl.label,
+                ox + dl.x,
+                bottom + 6.0,
+                11.0,
+                colors.axis_label,
+                Weight::Normal,
+                Align::Center,
+            );
         }
 
         for line in &s.lines {
@@ -301,7 +405,8 @@ impl App {
             let col = theme::hex(line.color);
             let dash = Canvas::parse_dash(line.dash);
 
-            let points: Vec<(f64, f64)> = line.points.iter().map(|&(x, y)| (ox + x, oy + y)).collect();
+            let points: Vec<(f64, f64)> =
+                line.points.iter().map(|&(x, y)| (ox + x, oy + y)).collect();
             canvas.stroke_polyline(&points, col, 2.0, &dash);
 
             let mx = ox + line.marker_x;
@@ -310,7 +415,14 @@ impl App {
         }
     }
 
-    fn draw_legend(&self, canvas: &Canvas, ox: f64, oy: f64, colors: &Colors, toggled: &mut Option<&'static str>) {
+    fn draw_legend(
+        &self,
+        canvas: &Canvas,
+        ox: f64,
+        oy: f64,
+        colors: &Colors,
+        toggled: &mut Option<&'static str>,
+    ) {
         let mut values_by_key: HashMap<&str, &biorhythm::Line> = HashMap::new();
         for l in &self.series.lines {
             values_by_key.insert(l.key, l);
@@ -318,17 +430,42 @@ impl App {
 
         let groups: [(f64, &str, Vec<&aspects::Aspect>); 2] = [
             (legend_left(), "Aspectos básicos", aspects::basico()),
-            (legend_left() + LEGEND_COL_WIDTH + LEGEND_COL_GAP, "Aspectos complementarios", aspects::complementario()),
+            (
+                legend_left() + LEGEND_COL_WIDTH + LEGEND_COL_GAP,
+                "Aspectos complementarios",
+                aspects::complementario(),
+            ),
         ];
 
         for (col_x, title, asps) in groups.iter() {
-            canvas.text(title, ox + col_x, oy + LEGEND_TOP, 14.0, colors.label, Weight::Bold, Align::Left);
+            canvas.text(
+                title,
+                ox + col_x,
+                oy + LEGEND_TOP,
+                14.0,
+                colors.label,
+                Weight::Bold,
+                Align::Left,
+            );
 
             for (i, asp) in asps.iter().enumerate() {
                 let row_y = oy + LEGEND_TOP + LEGEND_HEADER_H + i as f64 * LEGEND_ROW_H;
-                self.draw_legend_row(canvas, ox + col_x, row_y, asp, values_by_key.get(asp.key).copied(), colors);
+                self.draw_legend_row(
+                    canvas,
+                    ox + col_x,
+                    row_y,
+                    asp,
+                    values_by_key.get(asp.key).copied(),
+                    colors,
+                );
 
-                let resp = canvas.interact_click(ox + col_x, row_y, LEGEND_COL_WIDTH, LEGEND_ROW_H, ("legend-row", asp.key));
+                let resp = canvas.interact_click(
+                    ox + col_x,
+                    row_y,
+                    LEGEND_COL_WIDTH,
+                    LEGEND_ROW_H,
+                    ("legend-row", asp.key),
+                );
                 if resp.clicked() {
                     *toggled = Some(asp.key);
                 }
@@ -355,9 +492,21 @@ impl App {
             canvas.stroke_circle(col_x + 8.0, cy, 6.0, 2.0, col);
         }
 
-        let text_col = if visible { colors.text_h } else { colors.legend_dim };
+        let text_col = if visible {
+            colors.text_h
+        } else {
+            colors.legend_dim
+        };
 
-        canvas.text(asp.label, col_x + 24.0, row_y + 4.0, 13.0, text_col, Weight::Normal, Align::Left);
+        canvas.text(
+            asp.label,
+            col_x + 24.0,
+            row_y + 4.0,
+            13.0,
+            text_col,
+            Weight::Normal,
+            Align::Left,
+        );
         if let Some(l) = line {
             canvas.text(
                 &format!("{}%", l.current_value),
@@ -368,7 +517,15 @@ impl App {
                 Weight::Normal,
                 Align::Right,
             );
-            canvas.text(l.status, col_x + LEGEND_COL_WIDTH, row_y + 4.0, 12.0, colors.axis_label, Weight::Normal, Align::Right);
+            canvas.text(
+                l.status,
+                col_x + LEGEND_COL_WIDTH,
+                row_y + 4.0,
+                12.0,
+                colors.axis_label,
+                Weight::Normal,
+                Align::Right,
+            );
         }
     }
 }
@@ -377,12 +534,15 @@ impl eframe::App for App {
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         let colors = theme::for_mode(self.theme_mode);
 
-        egui::Frame::NONE.fill(colors.bg).inner_margin(WINDOW_MARGIN).show(ui, |ui| {
-            self.layout_topbar(ui, &colors);
-            ui.add_space(ROW_GAP);
-            self.layout_controls(ui, &colors);
-            ui.add_space(ROW_GAP);
-            self.layout_canvas(ui, &colors);
-        });
+        egui::Frame::NONE
+            .fill(colors.bg)
+            .inner_margin(WINDOW_MARGIN)
+            .show(ui, |ui| {
+                self.layout_topbar(ui, &colors);
+                ui.add_space(ROW_GAP);
+                self.layout_controls(ui, &colors);
+                ui.add_space(ROW_GAP);
+                self.layout_canvas(ui, &colors);
+            });
     }
 }

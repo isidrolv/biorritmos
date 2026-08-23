@@ -26,10 +26,11 @@ impl Button {
 
     /// Dibuja el botón en (x, y) y, si enabled, registra su zona clicable.
     /// Devuelve si fue pulsado en este frame.
+    #[allow(clippy::too_many_arguments)]
     pub fn show(
         &self,
         canvas: &Canvas,
-        id_source: impl std::hash::Hash,
+        id_source: impl std::hash::Hash + std::fmt::Debug,
         x: f64,
         y: f64,
         colors: &Colors,
@@ -39,8 +40,16 @@ impl Button {
         let (w, h) = self.measure(canvas);
 
         let bg = if selected { colors.gridline } else { colors.bg };
-        let text_col = if enabled { colors.text_h } else { colors.legend_dim };
-        let border_col = if enabled { colors.marker_line } else { colors.legend_dim };
+        let text_col = if enabled {
+            colors.text_h
+        } else {
+            colors.legend_dim
+        };
+        let border_col = if enabled {
+            colors.marker_line
+        } else {
+            colors.legend_dim
+        };
 
         canvas.fill_rect(x, y, w, h, bg);
         canvas.fill_rect(x, y, w, BORDER, border_col);
@@ -48,7 +57,15 @@ impl Button {
         canvas.fill_rect(x, y, BORDER, h, border_col);
         canvas.fill_rect(x + w - BORDER, y, BORDER, h, border_col);
 
-        canvas.text(self.text, x + PAD_X, y + PAD_Y, TEXT_SZ, text_col, Weight::Normal, Align::Left);
+        canvas.text(
+            self.text,
+            x + PAD_X,
+            y + PAD_Y,
+            TEXT_SZ,
+            text_col,
+            Weight::Normal,
+            Align::Left,
+        );
 
         if enabled {
             canvas.interact_click(x, y, w, h, id_source).clicked()

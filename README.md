@@ -23,7 +23,7 @@ El proyecto está en desarrollo. Los directorios de cada tecnología organizan i
 | [`python/`](python/) | Python | Pendiente |
 | [`react/`](react/) | React, TypeScript y Vite | Implementación funcional |
 | [`ruby/`](ruby/) | Ruby | Pendiente |
-| [`rust/`](rust/) | Rust | Pendiente |
+| [`rust/`](rust/) | Rust, eframe y egui | Implementación de escritorio funcional |
 | [`scala/`](scala/) | Scala | Pendiente |
 
 ## Implementaciones web
@@ -31,6 +31,7 @@ El proyecto está en desarrollo. Los directorios de cada tecnología organizan i
 - Consulta [`angular/README.md`](angular/README.md) para ejecutar la versión Angular.
 - Consulta [`electron/README.md`](electron/README.md) para ejecutar la versión de escritorio.
 - Consulta [`react/README.md`](react/README.md) para ejecutar la versión React.
+- Consulta [`rust/README.md`](rust/README.md) para ejecutar la versión de escritorio en Rust.
 
 ## Cómo contribuir
 

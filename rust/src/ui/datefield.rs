@@ -33,27 +33,58 @@ impl DateField {
     /// Dibuja el selector en (x, y) para date y devuelve la fecha resultante
     /// y si cambió en este frame. `id_prefix` debe ser único por instancia
     /// (p.ej. "birth" o "selected") para que las zonas clicables no choquen.
-    pub fn show(canvas: &Canvas, id_prefix: &str, x: f64, y: f64, date: Date, colors: &Colors) -> (Date, bool) {
+    pub fn show(
+        canvas: &Canvas,
+        id_prefix: &str,
+        x: f64,
+        y: f64,
+        date: Date,
+        colors: &Colors,
+    ) -> (Date, bool) {
         let mut result = date;
         let mut changed = false;
         let mut cx = x;
 
         let day_text = format!("{:02}", date.day());
-        if let Some(delta) = Self::draw_unit(canvas, &format!("{id_prefix}-day"), cx, y, DAY_W, &day_text, colors) {
+        if let Some(delta) = Self::draw_unit(
+            canvas,
+            &format!("{id_prefix}-day"),
+            cx,
+            y,
+            DAY_W,
+            &day_text,
+            colors,
+        ) {
             result = add_days(result, delta);
             changed = true;
         }
         cx += DAY_W + ARROW_W + UNIT_GAP;
 
         let month_text = format!("{:02}", u8::from(date.month()));
-        if let Some(delta) = Self::draw_unit(canvas, &format!("{id_prefix}-month"), cx, y, MONTH_W, &month_text, colors) {
+        if let Some(delta) = Self::draw_unit(
+            canvas,
+            &format!("{id_prefix}-month"),
+            cx,
+            y,
+            MONTH_W,
+            &month_text,
+            colors,
+        ) {
             result = add_months(result, delta as i32);
             changed = true;
         }
         cx += MONTH_W + ARROW_W + UNIT_GAP;
 
         let year_text = format!("{:04}", date.year());
-        if let Some(delta) = Self::draw_unit(canvas, &format!("{id_prefix}-year"), cx, y, YEAR_W, &year_text, colors) {
+        if let Some(delta) = Self::draw_unit(
+            canvas,
+            &format!("{id_prefix}-year"),
+            cx,
+            y,
+            YEAR_W,
+            &year_text,
+            colors,
+        ) {
             result = add_years(result, delta as i32);
             changed = true;
         }
@@ -101,11 +132,19 @@ impl DateField {
         let tri_col = colors.label;
         let mx = ax + ARROW_W / 2.0;
         canvas.fill_polygon(
-            &[(mx - 4.0, y + arrow_h - 5.0), (mx + 4.0, y + arrow_h - 5.0), (mx, y + arrow_h - 11.0)],
+            &[
+                (mx - 4.0, y + arrow_h - 5.0),
+                (mx + 4.0, y + arrow_h - 5.0),
+                (mx, y + arrow_h - 11.0),
+            ],
             tri_col,
         );
         canvas.fill_polygon(
-            &[(mx - 4.0, y + arrow_h + 5.0), (mx + 4.0, y + arrow_h + 5.0), (mx, y + arrow_h + 11.0)],
+            &[
+                (mx - 4.0, y + arrow_h + 5.0),
+                (mx + 4.0, y + arrow_h + 5.0),
+                (mx, y + arrow_h + 11.0),
+            ],
             tri_col,
         );
 
@@ -113,7 +152,13 @@ impl DateField {
             .interact_click(ax, y, ARROW_W, arrow_h, format!("{id_prefix}-up"))
             .clicked();
         let down_clicked = canvas
-            .interact_click(ax, y + arrow_h, ARROW_W, arrow_h, format!("{id_prefix}-down"))
+            .interact_click(
+                ax,
+                y + arrow_h,
+                ARROW_W,
+                arrow_h,
+                format!("{id_prefix}-down"),
+            )
             .clicked();
 
         if up_clicked {
@@ -127,8 +172,11 @@ impl DateField {
 }
 
 fn days_in_month(year: i32, month: Month) -> u8 {
-    let (next_year, next_month) =
-        if month == Month::December { (year + 1, Month::January) } else { (year, month.next()) };
+    let (next_year, next_month) = if month == Month::December {
+        (year + 1, Month::January)
+    } else {
+        (year, month.next())
+    };
     let first_of_next = Date::from_calendar_date(next_year, next_month, 1).expect("fecha válida");
     (first_of_next - Duration::days(1)).day()
 }

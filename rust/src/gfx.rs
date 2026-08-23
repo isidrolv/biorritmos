@@ -50,8 +50,14 @@ pub fn load_fonts(ctx: &egui::Context) {
     let mut register = |key: &str, filename: &str, family_name: &str| {
         let family = FontFamily::Name(family_name.into());
         if let Ok(data) = std::fs::read(fonts_dir.join(filename)) {
-            fonts.font_data.insert(key.to_string(), egui::FontData::from_owned(data).into());
-            fonts.families.entry(family).or_default().insert(0, key.to_string());
+            fonts
+                .font_data
+                .insert(key.to_string(), egui::FontData::from_owned(data).into());
+            fonts
+                .families
+                .entry(family)
+                .or_default()
+                .insert(0, key.to_string());
         }
     };
 
@@ -96,23 +102,36 @@ impl<'a> Canvas<'a> {
 
     /// Registra una zona clicable en el rectángulo lógico (x, y, w, h),
     /// identificada por id_source (debe ser estable entre frames).
-    pub fn interact_click(&self, x: f64, y: f64, w: f64, h: f64, id_source: impl std::hash::Hash) -> Response {
-        let rect = Rect::from_min_size(Pos2::new(x as f32, y as f32), Vec2::new(w as f32, h as f32));
+    pub fn interact_click(
+        &self,
+        x: f64,
+        y: f64,
+        w: f64,
+        h: f64,
+        id_source: impl std::hash::Hash + std::fmt::Debug,
+    ) -> Response {
+        let rect =
+            Rect::from_min_size(Pos2::new(x as f32, y as f32), Vec2::new(w as f32, h as f32));
         self.ui.interact(rect, Id::new(id_source), Sense::click())
     }
 
     pub fn fill_rect(&self, x: f64, y: f64, w: f64, h: f64, color: Color32) {
-        let rect = Rect::from_min_size(Pos2::new(x as f32, y as f32), Vec2::new(w as f32, h as f32));
+        let rect =
+            Rect::from_min_size(Pos2::new(x as f32, y as f32), Vec2::new(w as f32, h as f32));
         self.painter().rect_filled(rect, 0.0, color);
     }
 
     pub fn fill_circle(&self, cx: f64, cy: f64, r: f64, color: Color32) {
-        self.painter().circle_filled(Pos2::new(cx as f32, cy as f32), r as f32, color);
+        self.painter()
+            .circle_filled(Pos2::new(cx as f32, cy as f32), r as f32, color);
     }
 
     pub fn stroke_circle(&self, cx: f64, cy: f64, r: f64, thickness: f64, color: Color32) {
-        self.painter()
-            .circle_stroke(Pos2::new(cx as f32, cy as f32), r as f32, Stroke::new(thickness as f32, color));
+        self.painter().circle_stroke(
+            Pos2::new(cx as f32, cy as f32),
+            r as f32,
+            Stroke::new(thickness as f32, color),
+        );
     }
 
     /// Círculo relleno del color de la línea con un anillo blanco encima,
@@ -123,7 +142,17 @@ impl<'a> Canvas<'a> {
         self.stroke_circle(cx, cy, r, thickness, theme::WHITE);
     }
 
-    pub fn stroke_line(&self, x1: f64, y1: f64, x2: f64, y2: f64, color: Color32, thickness: f64, dash: &[f64]) {
+    #[allow(clippy::too_many_arguments)]
+    pub fn stroke_line(
+        &self,
+        x1: f64,
+        y1: f64,
+        x2: f64,
+        y2: f64,
+        color: Color32,
+        thickness: f64,
+        dash: &[f64],
+    ) {
         self.stroke_polyline(&[(x1, y1), (x2, y2)], color, thickness, dash);
     }
 
@@ -131,7 +160,13 @@ impl<'a> Canvas<'a> {
     /// alternas trazo/hueco, en unidades lógicas) -- egui no soporta stroke
     /// punteado nativo, así que el patrón se recorre a mano igual que en la
     /// versión Go (canvas.go StrokePolyline).
-    pub fn stroke_polyline(&self, pts: &[(f64, f64)], color: Color32, thickness: f64, dash: &[f64]) {
+    pub fn stroke_polyline(
+        &self,
+        pts: &[(f64, f64)],
+        color: Color32,
+        thickness: f64,
+        dash: &[f64],
+    ) {
         if pts.len() < 2 {
             return;
         }
@@ -142,7 +177,10 @@ impl<'a> Canvas<'a> {
         if dash.is_empty() {
             for w in pts.windows(2) {
                 painter.line_segment(
-                    [Pos2::new(w[0].0 as f32, w[0].1 as f32), Pos2::new(w[1].0 as f32, w[1].1 as f32)],
+                    [
+                        Pos2::new(w[0].0 as f32, w[0].1 as f32),
+                        Pos2::new(w[1].0 as f32, w[1].1 as f32),
+                    ],
                     stroke,
                 );
             }
@@ -172,7 +210,10 @@ impl<'a> Canvas<'a> {
                 let next = (cur.0 + dir.0 * step, cur.1 + dir.1 * step);
                 if on {
                     painter.line_segment(
-                        [Pos2::new(cur.0 as f32, cur.1 as f32), Pos2::new(next.0 as f32, next.1 as f32)],
+                        [
+                            Pos2::new(cur.0 as f32, cur.1 as f32),
+                            Pos2::new(next.0 as f32, next.1 as f32),
+                        ],
                         stroke,
                     );
                 }
@@ -196,7 +237,9 @@ impl<'a> Canvas<'a> {
         if s.is_empty() || s == "0" {
             return Vec::new();
         }
-        s.split_whitespace().filter_map(|f| f.parse::<f64>().ok()).collect()
+        s.split_whitespace()
+            .filter_map(|f| f.parse::<f64>().ok())
+            .collect()
     }
 
     /// Rellena un polígono cerrado (usado para las flechas de los
@@ -205,7 +248,10 @@ impl<'a> Canvas<'a> {
         if pts.len() < 3 {
             return;
         }
-        let points: Vec<Pos2> = pts.iter().map(|&(x, y)| Pos2::new(x as f32, y as f32)).collect();
+        let points: Vec<Pos2> = pts
+            .iter()
+            .map(|&(x, y)| Pos2::new(x as f32, y as f32))
+            .collect();
         self.painter()
             .add(egui::Shape::convex_polygon(points, color, Stroke::NONE));
     }
@@ -222,31 +268,57 @@ impl<'a> Canvas<'a> {
     }
 
     /// Dibuja una línea de texto en (x, y) -- esquina superior según align.
-    pub fn text(&self, text: &str, x: f64, y: f64, size: f64, color: Color32, weight: Weight, align: Align) {
+    #[allow(clippy::too_many_arguments)]
+    pub fn text(
+        &self,
+        text: &str,
+        x: f64,
+        y: f64,
+        size: f64,
+        color: Color32,
+        weight: Weight,
+        align: Align,
+    ) {
         let font_id = FontId::new(size as f32, family_for(weight));
         let anchor = match align {
             Align::Left => egui::Align2::LEFT_TOP,
             Align::Center => egui::Align2::CENTER_TOP,
             Align::Right => egui::Align2::RIGHT_TOP,
         };
-        self.painter().text(Pos2::new(x as f32, y as f32), anchor, text, font_id, color);
+        self.painter()
+            .text(Pos2::new(x as f32, y as f32), anchor, text, font_id, color);
     }
 
     /// Dibuja un párrafo centrado y ajustado (wrap) dentro de width, como
     /// NativeDraw.draw_layout. Devuelve la altura ocupada, en unidades
     /// lógicas, para poder posicionar contenido debajo.
-    pub fn paragraph(&self, text: &str, x: f64, y: f64, width: f64, size: f64, color: Color32, weight: Weight) -> f64 {
+    #[allow(clippy::too_many_arguments)]
+    pub fn paragraph(
+        &self,
+        text: &str,
+        x: f64,
+        y: f64,
+        width: f64,
+        size: f64,
+        color: Color32,
+        weight: Weight,
+    ) -> f64 {
         let font_id = FontId::new(size as f32, family_for(weight));
         let mut job = egui::text::LayoutJob::single_section(
             text.to_string(),
-            egui::TextFormat { font_id, color, ..Default::default() },
+            egui::TextFormat {
+                font_id,
+                color,
+                ..Default::default()
+            },
         );
         job.wrap.max_width = width as f32;
         job.halign = egui::Align::Center;
 
         let galley = self.ui.ctx().fonts_mut(|f| f.layout_job(job));
         let height = galley.size().y as f64;
-        self.painter().galley(Pos2::new(x as f32, y as f32), galley, color);
+        self.painter()
+            .galley(Pos2::new(x as f32, y as f32), galley, color);
         height
     }
 }
