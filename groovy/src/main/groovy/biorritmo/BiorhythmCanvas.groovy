@@ -32,7 +32,7 @@ class BiorhythmCanvas extends JPanel {
     private static final double LEGEND_ROW_H = 26d
 
     private final Closure<ThemeColors> colorProvider
-    private final Map<String, Boolean> visible = Aspects.ALL.collectEntries { Aspect aspect -> [aspect.key, true] }
+    private final Map<String, Boolean> cycleVisibility = Aspects.ALL.collectEntries { Aspect aspect -> [aspect.key, true] }
     private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern('dd MMM', new Locale('es', 'MX'))
     private BiorhythmResult result
     private LocalDate selectedDate = LocalDate.now()
@@ -114,7 +114,7 @@ class BiorhythmCanvas extends JPanel {
             }
         }
 
-        result.cycles.findAll { CycleResult cycle -> visible[cycle.aspect.key] }.each { CycleResult cycle ->
+        result.cycles.findAll { CycleResult cycle -> cycleVisibility[cycle.aspect.key] }.each { CycleResult cycle ->
             Path2D.Double path = new Path2D.Double()
             cycle.values.eachWithIndex { double value, int index ->
                 if (index == 0) path.moveTo(x(index), y(value)) else path.lineTo(x(index), y(value))
@@ -143,7 +143,7 @@ class BiorhythmCanvas extends JPanel {
             (group.aspects as List<Aspect>).eachWithIndex { Aspect aspect, int index ->
                 double rowTop = LEGEND_Y + LEGEND_TOP + LEGEND_HEADER_H + index * LEGEND_ROW_H
                 double centerY = rowTop + LEGEND_ROW_H / 2d
-                boolean enabled = visible[aspect.key]
+                boolean enabled = cycleVisibility[aspect.key]
                 g.color = aspect.color
                 Ellipse2D dot = new Ellipse2D.Double(offsetX + columnX + 2d, centerY - 6d, 12d, 12d)
                 if (enabled) g.fill(dot)
@@ -175,7 +175,7 @@ class BiorhythmCanvas extends JPanel {
                 double rowY = LEGEND_TOP + LEGEND_HEADER_H + index * LEGEND_ROW_H
                 if (localY >= rowY && localY <= rowY + LEGEND_ROW_H) {
                     Aspect aspect = aspects[index]
-                    visible[aspect.key] = !visible[aspect.key]
+                    cycleVisibility[aspect.key] = !cycleVisibility[aspect.key]
                     repaint()
                     return
                 }

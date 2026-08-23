@@ -1,6 +1,7 @@
 package biorritmo
 
 import org.junit.jupiter.api.Test
+import java.awt.image.BufferedImage
 import java.time.LocalDate
 
 import static org.junit.jupiter.api.Assertions.assertEquals
@@ -35,5 +36,22 @@ class BiorhythmTest {
         assertEquals([23, 28, 33, 53, 48, 38, 43], Aspects.ALL*.period)
         assertEquals(3, Aspects.ALL.count { it.group == AspectGroup.BASIC })
         assertEquals(4, Aspects.ALL.count { it.group == AspectGroup.COMPLEMENTARY })
+    }
+
+    @Test
+    void 'el lienzo completo se puede pintar en ambos temas'() {
+        [Themes.LIGHT, Themes.DARK].each { ThemeColors colors ->
+            BiorhythmCanvas canvas = new BiorhythmCanvas({ colors })
+            canvas.setSize(800, 614)
+            canvas.updateData(LocalDate.of(2000, 1, 1), LocalDate.of(2026, 8, 23))
+            BufferedImage image = new BufferedImage(800, 614, BufferedImage.TYPE_INT_ARGB)
+            def graphics = image.createGraphics()
+            try {
+                canvas.paint(graphics)
+            } finally {
+                graphics.dispose()
+            }
+            assertTrue(image.getRGB(400, 300) != 0)
+        }
     }
 }
